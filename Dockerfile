@@ -33,5 +33,7 @@ RUN composer install && npm install && npm run dev
 # Berikan permission pada storage dan bootstrap
 RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
 
+RUN cp /var/www/.env.example /var/www/.env
+
 # Jalankan php-fpm
 CMD ["php-fpm"]
