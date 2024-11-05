@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: innoshop_app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - innoshop-network
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=innoshop
+      - DB_USERNAME=innoshop_user
+      - DB_PASSWORD=innoshop_password
+
+  webserver:
+    image: nginx:alpine
+    container_name: innoshop_webserver
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8000:80"
+    networks:
+      - innoshop-network
+
+  db:
+    image: mysql:5.7
+    container_name: innoshop_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: innoshop
+      MYSQL_USER: innoshop_user
+      MYSQL_PASSWORD: innoshop_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - innoshop-network
+
+networks:
+  innoshop-network:
+    driver: bridge
+
+volumes:
+  db_data:
