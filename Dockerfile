@@ -35,5 +35,9 @@ RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
 
 RUN cp /var/www/.env.example /var/www/.env
 
+RUN php artisan key:generate
+
+RUN php artisan migrate:fresh --seed
+
 # Jalankan php-fpm
 CMD ["php-fpm"]
