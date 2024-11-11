@@ -9,6 +9,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./:/var/www
+      - /var/www/vendor
     networks:
       - innoshop-network
     environment:
@@ -16,6 +17,9 @@ services:
       - DB_DATABASE=innoshop
       - DB_USERNAME=innoshop_user
       - DB_PASSWORD=innoshop_password
+    depends_on:
+      - db
+    command: sh -c "sleep 10 && php artisan migrate && php artisan db:seed && php artisan serve"
 
   webserver:
     image: nginx:alpine

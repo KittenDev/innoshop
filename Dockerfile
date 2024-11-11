@@ -30,14 +30,11 @@ COPY . .
 # Install dependensi aplikasi
 RUN composer install && npm install && npm run dev
 
-# Berikan permission pada storage dan bootstrap
-RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
-
 RUN cp /var/www/.env.example /var/www/.env
 
 RUN php artisan key:generate
 
-RUN php artisan migrate:fresh --seed
+# Berikan permission pada storage dan bootstrap
+RUN chmod -R 777 /var/www/storage /var/www/bootstrap/
 
-# Jalankan php-fpm
-CMD ["php-fpm"]
+EXPOSE 80
