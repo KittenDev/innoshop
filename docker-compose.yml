@@ -2,16 +2,15 @@ version: '3.8'
 
 services:
   app:
+    container_name: innoshop_app
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: innoshop_app
     working_dir: /var/www
+    restart: unless-stopped
     volumes:
       - ./:/var/www
       - /var/www/vendor
-    networks:
-      - innoshop-network
     environment:
       - DB_HOST=db
       - DB_DATABASE=innoshop
@@ -19,7 +18,11 @@ services:
       - DB_PASSWORD=innoshop_password
     depends_on:
       - db
-    command: sh -c "sleep 10 && php artisan migrate && php artisan db:seed && php artisan serve"
+    networks:
+      - innoshop-network
+    # Removed the "command" line to allow PHP-FPM to start as default
+    expose:
+      - "9000"  # Exposing PHP-FPM port for internal network access
 
   webserver:
     image: nginx:alpine
@@ -27,11 +30,13 @@ services:
     working_dir: /var/www
     volumes:
       - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d  # Ensure `default.conf` is here
     ports:
-      - "8000:80"
+      - "8000:80"  # Exposing NGINX on host port 8000
     networks:
       - innoshop-network
+    depends_on:
+      - app
 
   db:
     image: mysql:5.7
