@@ -34,9 +34,6 @@ RUN npm install
 
 RUN npm run dev
 
-RUN cp /var/www/.env.example /var/www/.env
-
 RUN php artisan key:generate
 
-# Berikan permission pada storage dan bootstrap
 RUN chmod -R 777 /var/www/storage /var/www/bootstrap/

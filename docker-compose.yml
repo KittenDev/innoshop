@@ -14,8 +14,8 @@ services:
     environment:
       - DB_HOST=db
       - DB_DATABASE=innoshop
-      - DB_USERNAME=innoshop_user
-      - DB_PASSWORD=innoshop_password
+      - DB_USERNAME=raidenei
+      - DB_PASSWORD=akusayangei
     depends_on:
       - db
     networks:
@@ -31,8 +31,10 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d  # Ensure `default.conf` is here
+      - /etc/letsencrypt:/etc/letsencrypt
     ports:
-      - "8000:80"  # Exposing NGINX on host port 8000
+      - "80:80"
+      - "443:443"
     networks:
       - innoshop-network
     depends_on:
@@ -42,10 +44,10 @@ services:
     image: mysql:5.7
     container_name: innoshop_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: dafasayangei
       MYSQL_DATABASE: innoshop
-      MYSQL_USER: innoshop_user
-      MYSQL_PASSWORD: innoshop_password
+      MYSQL_USER: raidenei
+      MYSQL_PASSWORD: akusayangei
     volumes:
       - db_data:/var/lib/mysql
     networks:
