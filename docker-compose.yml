@@ -14,8 +14,8 @@ services:
     environment:
       - DB_HOST=db
       - DB_DATABASE=innoshop
-      - DB_USERNAME=raidenei
-      - DB_PASSWORD=akusayangei
+      - DB_USERNAME=innoshop_user
+      - DB_PASSWORD=innoshop_password
     depends_on:
       - db
     networks:
